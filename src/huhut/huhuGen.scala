@@ -34,7 +34,13 @@ object huhuGen extends App {
     val f = Source.fromFile("obj.huhu")
     
     val line = f.getLines
-    val list = line.toList.map(_.split("_")).map((a: Array[String]) => Array[Word](Word(a(0), "o", false), Word(a(1), "o", true)))
+    val list = line.toList.map(_.split("_")).map((a: Array[String]) => Array[Word](Word(a(0), "o", false), try {
+      Word(a(1), "o", true)
+    } catch {
+      case e: java.lang.ArrayIndexOutOfBoundsException =>  Word(a(0), "o", true)
+    }))
+     //catch Word(a(0), "o", false)))
+   
     objects = list.map((a: Array[Word]) =>  a(0))
     objectsPlural = list.map((a: Array[Word]) =>  a(1))
   }
